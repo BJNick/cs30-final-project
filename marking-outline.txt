@@ -1,0 +1,13 @@
+CS30 Final Project - due April 30th
+
+Need to have:
+
+interlaced modules/files
+for/while
+list/dictionary/tuple
+recursion - could be graph search
+oop - classes, inheritance
+loading data from file to class
+sorting and searching
+
+
