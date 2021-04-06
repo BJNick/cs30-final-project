@@ -1,10 +1,10 @@
 wall,wall,wall,wall,wall,wall,wall,wall,wall,wall
 wall,cornerUL,,,,,,,cornerUR,wall
-wall,,,,spikes,,,,,wall
 wall,,,,,,,,,wall
 wall,,,,,,,,,wall
-wall,,,,,,,,,wall
+wall,,,,cornerDR,cornerDL,,,cornerDR,wall
+wall,,,,cornerUR,cornerUL,,,,wall
 wall,,,,,,spikes,,,wall
-wall,,,,,spikes,spikes,,,wall
-wall,cornerDL,,,,,,,cornerDR,wall
+wall,,,,,,spikes,,,wall
+wall,cornerDL,,,cornerDR,,,,,wall
 wall,wall,wall,wall,wall,wall,wall,wall,wall,wall

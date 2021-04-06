@@ -9,19 +9,22 @@ import pygame
 import time
 # Import my own module
 import grid_world
+import player
 
 
 if __name__ == "__main__":
 
     pygame.init()
     size = width, height = 640, 640
-    black = (0, 0, 0)
+    background = (150, 150, 150)
 
     # Initialize variables
     screen = pygame.display.set_mode(size)
+    grid = grid_world.Grid(16)
+    player = player.Player(grid, 2, 2)
 
-    grid = grid_world.Grid(64)
-    player = grid_world.Player(grid, 2, 2)
+    surface = pygame.Surface((grid.width * grid.tile_size,
+                              grid.height * grid.tile_size))
 
     while True:
         for event in pygame.event.get():
@@ -56,11 +59,11 @@ if __name__ == "__main__":
         if player.boomerang_in_air():
             player.boomerang.update(0.01)
         # Draw everything on the screen
-        screen.fill(black)
-        screen.blit(grid.draw_grid(), screen.get_rect())
-        screen.blit(player.draw_sprite(), player.get_rect())
+        surface.fill(background)
+        surface.blit(grid.draw_grid(), surface.get_rect())
+        surface.blit(player.draw_sprite(), player.get_rect())
         if player.boomerang_in_air():
-            screen.blit(player.boomerang.draw_sprite(),
-                        player.boomerang.get_rect())
+            surface.blit(*player.boomerang.draw_sprite())
+        pygame.transform.scale(surface, size, screen)
         pygame.display.flip()
         time.sleep(0.01)
