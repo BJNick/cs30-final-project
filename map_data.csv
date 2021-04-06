@@ -2,7 +2,7 @@ wall,wall,wall,wall,wall,wall,wall,wall,wall,wall
 wall,cornerUL,,,,,,,cornerUR,wall
 wall,,,,,,,,,wall
 wall,,,,,,,,,wall
-wall,,,,cornerDR,cornerDL,,,cornerDR,wall
+wall,,wall,,cornerDR,cornerDL,,,cornerDR,wall
 wall,,,,cornerUR,cornerUL,,,,wall
 wall,,,,,,spikes,,,wall
 wall,,,,,,spikes,,,wall

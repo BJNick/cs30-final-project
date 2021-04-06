@@ -7,10 +7,10 @@ The main class of this application
 import sys
 import pygame
 import time
-# Import my own module
+# Import my own modules
 import grid_world
-import player
-
+import player_character
+from enemies import Enemy
 
 if __name__ == "__main__":
 
@@ -21,10 +21,14 @@ if __name__ == "__main__":
     # Initialize variables
     screen = pygame.display.set_mode(size)
     grid = grid_world.Grid(16)
-    player = player.Player(grid, 2, 2)
+    player = player_character.Player(grid, 2, 2)
+    enemies = [Enemy(grid, player, 2, 7),
+               Enemy(grid, player, 8, 7),
+               Enemy(grid, player, 8, 2)]
 
     surface = pygame.Surface((grid.width * grid.tile_size,
                               grid.height * grid.tile_size))
+
 
     while True:
         for event in pygame.event.get():
@@ -58,12 +62,17 @@ if __name__ == "__main__":
         player.update(0.01)
         if player.boomerang_in_air():
             player.boomerang.update(0.01)
+        for enemy in enemies:
+            enemy.update(0.01)
         # Draw everything on the screen
         surface.fill(background)
         surface.blit(grid.draw_grid(), surface.get_rect())
-        surface.blit(player.draw_sprite(), player.get_rect())
+        for enemy in enemies:
+            surface.blit(*enemy.draw_sprite())
+        surface.blit(*player.draw_sprite())
         if player.boomerang_in_air():
             surface.blit(*player.boomerang.draw_sprite())
+        # Scale up to fit the screen
         pygame.transform.scale(surface, size, screen)
         pygame.display.flip()
         time.sleep(0.01)
