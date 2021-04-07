@@ -1,0 +1,10 @@
+wall,wall,wall,wall,wall,wall,wall,wall,wall,wall
+wall,cornerUL,,coin,,spikesB,enemy,spikesB,cornerUR,wall
+wall,,player,,,,spikesB,switchA,,wall
+wall,,,,,,,,,wall
+wall,,wall,,cornerDR,cornerDL,,,cornerDR,wall
+wall,,,,cornerUR,cornerUL,,,,wall
+wall,switchB,,,,,spikesA unarmed,,,wall
+wall,,enemy,,,,spikesA unarmed,,,wall
+wall,cornerDL,,,cornerDR,,,enemy,exit test_level,wall
+wall,wall,wall,wall,wall,wall,wall,wall,wall,wall

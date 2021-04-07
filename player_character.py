@@ -5,13 +5,12 @@ A module that contains classes Player and Boomerang
 """
 
 import pygame
-from grid_world import Grid, Tile
 
 
 # Defines basics of movement and rendering
 class MovingEntity:
 
-    def __init__(self, grid: Grid, row=0, column=0):
+    def __init__(self, grid, row=0, column=0):
         self.grid = grid
         self.row = row
         self.column = column
@@ -30,7 +29,7 @@ class MovingEntity:
 
     # Makes the entity move in a given direction
     def set_moving(self, direction, condition=True):
-        if direction == None:
+        if direction is None:
             self.movement_directions = []
         if condition:
             if direction not in self.movement_directions:
@@ -74,7 +73,7 @@ class MovingEntity:
         if self.sprite is not None:
             return self.sprite, self.get_rect()
         surface = pygame.Surface((16, 16))
-        surface = surface.fill((1, 1, 1, 1))
+        surface.fill((1, 1, 1, 1))
         return surface, self.get_rect()
 
     def distance_to(self, other) -> float:
@@ -114,18 +113,40 @@ class MovingEntity:
 # Contains all information about the player character in the game
 class Player(MovingEntity):
 
-    def __init__(self, grid: Grid, row=0, column=0):
+    def __init__(self, grid, row=0, column=0):
         super().__init__(grid, row, column)
         self.speed = 4
         self.sprite = pygame.image.load("sprites/player.png")
         self.boomerang = None
         self.has_boomerang = True
         self.is_dead = False
+        self.on_exit = False
+        self.coin_count = 0
+        self.throw_count = 0
 
-    def set_moving(self, direction, condition=True):
+    # Update movement and tiles
+    def update(self, delta_time, step=64):
         if self.is_dead:
-            super().set_moving(None)
             return
+        super().update(delta_time, step)
+        self.update_with_tiles()
+        if self.boomerang_in_air():
+            self.boomerang.update(delta_time)
+
+    # Updates active tiles such as spikes and switches
+    def update_with_tiles(self):
+        tiles = self.grid.active_tiles
+        for tile in tiles:
+            if "spikes" in tile.name:
+                spikes = tile
+                if spikes.is_armed and self.distance_to(spikes) < 0.5:
+                    self.kill(None)
+            elif "exit" in tile.name:
+                if self.distance_to(tile) < 0.2 and self.has_boomerang:
+                    self.on_exit = tile
+
+    # Sets it moving in the needed direction
+    def set_moving(self, direction, condition=True):
         super().set_moving(direction, condition)
 
     # Tries to move the player in a given direction, returns True if succeeds
@@ -136,13 +157,31 @@ class Player(MovingEntity):
                         round(self.column + column_disp / 2)
 
         # If it's empty, go there
-        if self.grid.is_open_space(*adjacent_tile):
+        tile = self.grid.get_tile_at(*adjacent_tile)
+        if "wall" not in tile.name:
             if row_disp != 0 or column_disp != 0:
                 self.row += row_disp * distance
                 self.column += column_disp * distance
                 return True
         # Else stay where you are
         return False
+
+    # Process user input
+    def process_key_presses(self, event: pygame.event.Event):
+        if event.type == pygame.KEYDOWN:
+            condition = True
+        elif event.type == pygame.KEYUP:
+            condition = False
+        else:
+            return
+        if event.key == pygame.K_LEFT or event.key == ord('a'):
+            self.set_moving("left", condition)
+        if event.key == pygame.K_RIGHT or event.key == ord('d'):
+            self.set_moving("right", condition)
+        if event.key == pygame.K_UP or event.key == ord('w'):
+            self.set_moving("up", condition)
+        if event.key == pygame.K_DOWN or event.key == ord('s'):
+            self.set_moving("down", condition)
 
     # Checks if the boomerang was thrown
     def boomerang_in_air(self):
@@ -151,8 +190,7 @@ class Player(MovingEntity):
     # Creates and throws the boomerang
     def throw_boomerang(self):
         # If doesn't have the boomerang, try to catch it
-        if not self.has_boomerang and \
-                self.distance_to(self.boomerang) < 1.5:
+        if not self.has_boomerang and self.distance_to(self.boomerang) < 1.5:
             self.has_boomerang = True
             self.boomerang = None
             return
@@ -163,6 +201,7 @@ class Player(MovingEntity):
             self.boomerang = Boomerang(self.grid, self.row, self.column)
             self.boomerang.set_moving(self.movement_directions[0], True)
             self.has_boomerang = False
+            self.throw_count += 1
         else:
             return
 
@@ -175,14 +214,13 @@ class Player(MovingEntity):
 
     # When hit by an enemy
     def kill(self, enemy):
-        self.set_moving(None)
         self.is_dead = True
 
 
 class Boomerang(MovingEntity):
 
     # Initializes all the needed variables
-    def __init__(self, grid: Grid, row=0, column=0):
+    def __init__(self, grid, row=0, column=0):
         super().__init__(grid, row, column)
         self.sprite = pygame.image.load("sprites/boomerang.png")
         self.sprite45 = pygame.image.load("sprites/boomerang-45.png")
@@ -208,6 +246,24 @@ class Boomerang(MovingEntity):
                 new_dir = self.reverse(last_dir)
             self.set_moving(last_dir, False)
             self.set_moving(new_dir, True)
+        self.update_with_tiles()
+
+    # Updates active tiles such as spikes and switches
+    def update_with_tiles(self):
+        tiles = self.grid.active_tiles
+        for tile in tiles:
+            if "switch" in tile.name:
+                switch = tile
+                if self.distance_to(switch) < 0.1:
+                    self.bounce()
+                    switch.toggle()
+
+    # Bounce the boomerang off an enemy
+    def bounce(self):
+        last_dir = self.movement_directions[0]
+        new_dir = self.reverse(last_dir)
+        self.set_moving(last_dir, False)
+        self.set_moving(new_dir, True)
 
     # Bounce off a corner
     def corner_bounce(self, direction: str, corner_name: str):
@@ -259,7 +315,7 @@ class Boomerang(MovingEntity):
         return rotated_sprite, rotated_rect
 
     # Checks for collision with a tile
-    def collides_with(self, tile: Tile, tile_pos, position=None):
+    def collides_with(self, tile, tile_pos, position=None):
         if position is None:
             position = self.row, self.column
         my_row, my_column = position
