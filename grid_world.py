@@ -231,6 +231,8 @@ class Switch(ActiveTile):
             if "spikes" in tile.name:
                 if letter in tile.name.removeprefix("spikes"):
                     tile.toggle()
+        for enemy in self.grid.enemies:
+            enemy.update_path(True)
 
     # Draws the switch
     def draw(self, surface: pygame.Surface, rect: pygame.Rect):

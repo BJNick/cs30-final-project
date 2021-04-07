@@ -10,6 +10,7 @@ import time
 
 # Import my own modules
 import grid_world
+import enemies
 
 # The class containing the game methods
 class Game:
@@ -123,6 +124,6 @@ class Game:
 
 # Starts the game on run
 if __name__ == "__main__":
-    game = Game("test_level")
+    game = Game("level_A")
     while True:
         game.game_loop()

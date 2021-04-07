@@ -1,0 +1,11 @@
+wall,wall,wall,wall,wall,wall,wall,wall,wall,wall,wall,wall,wall,wall
+wall,cornerUL,,,,cornerUR,wall,cornerUL,,,spikesA unarmed,,cornerUR,wall
+wall,,player,,,,wall,,enemy,,spikesA unarmed,,,wall
+wall,,,,,,wall,,,,spikesA unarmed,,enemy,wall
+wall,,,,spikes,spikes,spikes,,,,spikesA unarmed,,,wall
+wall,spikesA,spikesA,spikesA,spikes,switchA,spikes,spikesA,spikesA,spikesA,spikes,,cornerDR,wall
+wall,,,,spikes,spikes,spikes,,,,wall,,cornerUR,wall
+wall,,,,,spikesA unarmed,,enemy,,,wall,spikesA,spikesA,wall
+wall,,enemy,,,spikesA unarmed,,,,,wall,,,wall
+wall,cornerDL,,,,spikesA unarmed,,,,cornerDR,wall,enemy,exit level_B,wall
+wall,wall,wall,wall,wall,wall,wall,wall,wall,wall,wall,wall,wall,wall

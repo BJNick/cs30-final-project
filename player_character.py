@@ -76,9 +76,11 @@ class MovingEntity:
         surface.fill((1, 1, 1, 1))
         return surface, self.get_rect()
 
-    def distance_to(self, other) -> float:
-        return ((self.row - other.row) ** 2 +
-                (self.column - other.column) ** 2) ** .5
+    def distance_to(self, other, position=None) -> float:
+        if position == None:
+            position = self.row, self.column
+        return ((position[0] - other.row) ** 2 +
+                (position[1] - other.column) ** 2) ** .5
 
     # Converts a direction string into displacement
     @staticmethod
