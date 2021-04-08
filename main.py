@@ -5,11 +5,24 @@ The main class of this application
 """
 
 import sys
-import pygame
+import os
 import time
+
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
+import pygame
 
 # Import my own modules
 import grid_world
+
+
+# Convert path to EXE file
+def resource_path(relative_path):
+    try:
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
 
 
 # The class containing the game methods
@@ -18,19 +31,26 @@ class Game:
     # Initialize permanent variables
     def __init__(self, initial_map):
         pygame.init()
+        pygame.display.set_icon(pygame.image.load(
+            resource_path("sprites/enemy.png")))
+        pygame.display.set_caption(
+            "\"Boomerang\" Weekly Game Jam - Week 195 submission by BJNick")
         self.pixel_scale = 4
         self.size = self.width, self.height = \
             self.pixel_scale * 160, self.pixel_scale * 160
         self.screen = pygame.display.set_mode(self.size)
-        self.ui_font_big = pygame.font.Font("DisposableDroidBB.ttf",
-                                            self.pixel_scale * 16)
-        self.ui_font = pygame.font.Font("DisposableDroidBB.ttf",
-                                        self.pixel_scale * 8)
+        font_path = resource_path("assets/DisposableDroidBB.ttf")
+        self.ui_font_big = pygame.font.Font(font_path, self.pixel_scale * 16)
+        self.ui_font = pygame.font.Font(font_path, self.pixel_scale * 8)
         self.grid, self.surface, self.last_inputs = None, None, None
         self.coin_count = 0
         self.throw_count = 0
         self.current_map = initial_map
         self.hint_text = []
+        # Load music
+        pygame.mixer.music.load(resource_path("assets/music_compressed.ogg"))
+        pygame.mixer.music.set_volume(0.25)
+        pygame.mixer.music.play(-1)
         self.load_map(initial_map)
 
     # Initialize variables for a specific map
@@ -38,7 +58,8 @@ class Game:
         if self.grid and self.grid.player:
             self.last_inputs = self.grid.player.movement_directions
         self.current_map = map_name
-        self.grid = grid_world.Grid("levels/" + map_name + "_map_data.csv", 16)
+        map_data_path = resource_path("levels/" + map_name + "_map_data.csv")
+        self.grid = grid_world.Grid(map_data_path, 16)
         self.surface = pygame.Surface((self.grid.width * self.grid.tile_size,
                                        self.grid.height * self.grid.tile_size))
         self.width, self.height = self.surface.get_rect().size
@@ -49,12 +70,12 @@ class Game:
         self.hint_text = []
         if "tutorial" in map_name or "the_end" in map_name:
             self.load_tutorial_text(map_name)
-        #if self.last_inputs:
-            #self.grid.player.movement_directions = self.last_inputs
+        # if self.last_inputs:
+        # self.grid.player.movement_directions = self.last_inputs
 
     # Load text hints for the tutorial
     def load_tutorial_text(self, level_name):
-        file_name = "levels/" + level_name + "_text.csv"
+        file_name = resource_path("levels/" + level_name + "_text.csv")
         self.hint_text = []
         with open(file_name) as file:
             for row, line in enumerate(file):
@@ -97,7 +118,7 @@ class Game:
         coordinates = (self.width / 2 - text_rect.width / 2,
                        self.height / 2 - text_rect.height / 2)
         self.screen.blit(text, (coordinates[0], coordinates[1] + space))
-        return space + font.get_linesize()
+        return space + font.get_linesize() - 4 * self.pixel_scale
 
     # The main procedure with game logic
     def game_loop(self):
