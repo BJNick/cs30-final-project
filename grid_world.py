@@ -22,6 +22,7 @@ class Grid:
         self.enemies = []
         self.player = None
         self.coins = []
+        self.surface = None
 
         # Opens the map data file and reads into memory
         with open(file_name) as file:
@@ -254,6 +255,8 @@ class Exit(ActiveTile):
 
     # Get level from the name
     def get_next_level(self):
+        if len(self.name.split(" ")) <= 1:
+            return None
         return self.name.split(" ")[1]
 
     # Draws the tile

@@ -7,5 +7,5 @@ wall,spikesA,spikesA,spikesA,spikes,switchA,spikes,spikesA,spikesA,spikesA,spike
 wall,,,,spikes,spikes,spikes,,,,wall,,cornerUR,wall
 wall,,,,,spikesA unarmed,,enemy,,,wall,spikesA,spikesA,wall
 wall,,enemy,,,spikesA unarmed,,,,,wall,,,wall
-wall,cornerDL,,,,spikesA unarmed,,,,cornerDR,wall,enemy,exit level_B,wall
+wall,cornerDL,,,,spikesA unarmed,,,,cornerDR,wall,enemy,exit level_2,wall
 wall,wall,wall,wall,wall,wall,wall,wall,wall,wall,wall,wall,wall,wall

@@ -7,5 +7,5 @@ wall,cornerDL,,,,spikesA,player,,spikesA,,enemy,,cornerUR,wall
 wall,cornerUL,,,,spikesA,spikesA,spikesA,spikesA,,,,,wall
 wall,spikesA,spikesA,spikesA,,,,,,,,,,wall
 wall,,enemy,spikesA,,,,,,enemy,,spikesA unarmed,spikesA unarmed,wall
-wall,cornerDL,,spikesA,,,cornerDR,cornerDL,,,,spikesA unarmed,exit,wall
+wall,cornerDL,,spikesA,,,cornerDR,cornerDL,,,,spikesA unarmed,exit level_5,wall
 wall,wall,wall,wall,wall,wall,wall,wall,wall,wall,wall,wall,wall,wall

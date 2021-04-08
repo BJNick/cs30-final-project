@@ -10,7 +10,7 @@ import time
 
 # Import my own modules
 import grid_world
-import enemies
+
 
 # The class containing the game methods
 class Game:
@@ -30,6 +30,7 @@ class Game:
         self.coin_count = 0
         self.throw_count = 0
         self.current_map = initial_map
+        self.hint_text = []
         self.load_map(initial_map)
 
     # Initialize variables for a specific map
@@ -45,8 +46,24 @@ class Game:
         self.height *= self.pixel_scale
         self.size = self.width, self.height
         self.screen = pygame.display.set_mode(self.size)
-        if self.last_inputs:
-            self.grid.player.movement_directions = self.last_inputs
+        self.hint_text = []
+        if "tutorial" in map_name or "the_end" in map_name:
+            self.load_tutorial_text(map_name)
+        #if self.last_inputs:
+            #self.grid.player.movement_directions = self.last_inputs
+
+    # Load text hints for the tutorial
+    def load_tutorial_text(self, level_name):
+        file_name = "levels/" + level_name + "_text.csv"
+        self.hint_text = []
+        with open(file_name) as file:
+            for row, line in enumerate(file):
+                if len(line.strip()) == 0:
+                    continue
+                hint = line.strip().split(",")
+                hint = hint[0].replace(";", ","), float(hint[1]) - 1, float(
+                    hint[2]) - 1
+                self.hint_text.append(hint)
 
     # Process key presses and exits
     def process_events(self):
@@ -97,33 +114,44 @@ class Game:
             self.surface.blit(*self.grid.player.boomerang.draw_sprite())
         # Scale up to fit the screen
         pygame.transform.scale(self.surface, self.size, self.screen)
-        # Show coins and throws
-        level_text = self.current_map.replace("_", " ").capitalize()
-        space = self.draw_top_text(level_text, self.ui_font,
-                                   self.pixel_scale * 4)
-        coin_text = "Coins: " + \
-                    str(self.coin_count + self.grid.player.coin_count)
-        space = self.draw_top_text(coin_text, self.ui_font, space)
-        throws_text = "Throws: " + \
-                      str(self.throw_count + self.grid.player.throw_count)
-        space = self.draw_top_text(throws_text, self.ui_font, space)
+        # Show coins and throws if not in tutorial
+        if "tutorial_1" not in self.current_map:
+            level_text = self.current_map.replace("_", " ").capitalize()
+            space = self.draw_top_text(level_text, self.ui_font,
+                                       self.pixel_scale * 4)
+            coin_text = "Coins: " + \
+                        str(self.coin_count + self.grid.player.coin_count)
+            space = self.draw_top_text(coin_text, self.ui_font, space)
+            throws_text = "Throws: " + \
+                          str(self.throw_count + self.grid.player.throw_count)
+            self.draw_top_text(throws_text, self.ui_font, space)
         # Show Game Over if the player is dead
         if self.grid.player.is_dead:
             line = self.draw_middle_text("Game Over", self.ui_font_big, 0)
             self.draw_middle_text("Press space to retry",
                                   self.ui_font, line)
+        # Show tutorial tips
+        for hint in self.hint_text:
+            text = self.ui_font.render(hint[0], False, (255, 255, 255))
+            hint_pos = (hint[2] * 16 + 4) * self.pixel_scale, \
+                       (hint[1] * 16 + 4) * self.pixel_scale
+            self.screen.blit(text, hint_pos)
         # Change the frame
         pygame.display.flip()
         time.sleep(0.01)
         # Next level
         if self.grid.player.on_exit:
-            self.coin_count += self.grid.player.coin_count
-            self.throw_count += self.grid.player.throw_count
-            self.load_map(self.grid.player.on_exit.get_next_level())
+            if "tutorial_1" not in self.current_map:
+                self.coin_count += self.grid.player.coin_count
+                self.throw_count += self.grid.player.throw_count
+            next_level = self.grid.player.on_exit.get_next_level()
+            if next_level is None:
+                sys.exit()
+            self.load_map(next_level)
 
 
 # Starts the game on run
 if __name__ == "__main__":
-    game = Game("level_A")
+    game = Game("tutorial_1")
     while True:
         game.game_loop()

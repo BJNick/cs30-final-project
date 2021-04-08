@@ -1,0 +1,11 @@
+wall,wall,wall,wall,wall,wall,wall,wall,wall,wall,wall,wall,wall,wall
+wall,cornerUL,enemy,spikesA,,,cornerUR,cornerUL,,,spikesA,enemy,cornerUR,wall
+wall,enemy,,spikesA,,,,,,,spikesA,,enemy,wall
+wall,spikesA,spikesA,wall,,,,,,,wall,spikesA,spikesA,wall
+wall,,,,,,,,,,,,,wall
+wall,,,,,,player,switchA,,,,,,wall
+wall,,,,,,,,,,,,,wall
+wall,spikesA,spikesA,wall,,,,,,,wall,spikesA,spikesA,wall
+wall,enemy,,spikesA,,,,,,,spikesA,enemy,enemy,wall
+wall,cornerDL,enemy,spikesA,,,cornerDR,cornerDL,,,spikesA,exit,cornerDR,wall
+wall,wall,wall,wall,wall,wall,wall,wall,wall,wall,wall,wall,wall,wall

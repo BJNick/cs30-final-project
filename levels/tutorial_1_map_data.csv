@@ -1,0 +1,11 @@
+wall,wall,wall,wall,wall,wall,wall,wall,wall,wall,wall,wall,wall,wall
+wall,cornerUL,,,,,,,cornerUR,wall,,switchA,,wall
+wall,,player,,cornerDR,cornerDL,,,,wall,,,,wall
+wall,,,,cornerUR,cornerUL,,,,wall,wall,spikesA unarmed,wall,wall
+wall,,,,,,cornerDR,cornerDL,,spikesB,,,,wall
+wall,,cornerDR,cornerDL,,,cornerUR,cornerUL,,spikesB,,,,wall
+wall,,cornerUR,cornerUL,,,,,,spikesB,,,,wall
+wall,,,,cornerDR,cornerDL,,,,wall,wall,spikesA,wall,wall
+wall,,,,cornerUR,cornerUL,,switchB,,wall,,,,wall
+wall,cornerDL,,,,,,,cornerDR,wall,,exit tutorial_2,,wall
+wall,wall,wall,wall,wall,wall,wall,wall,wall,wall,wall,wall,wall,wall
