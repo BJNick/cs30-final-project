@@ -1,2 +1,2 @@
-pyinstaller main.spec -w -y
+pyinstaller build.spec -w -y
 pause

@@ -1,7 +1,14 @@
 """
 Mykyta S.
 main.py
-The main class of this application
+
+The run-time main class of this application. Class Game displays the game on
+the screen. Expanded class structure:
+
+Game:
+    Grid:
+        Tile <- Corner, ActiveTile <- Spikes, Switch, Exit
+        MovingEntity <- Player, Boomerang, Enemy, Coin
 """
 
 import sys
@@ -15,7 +22,7 @@ import pygame
 import grid_world
 
 
-# Convert path to EXE file
+# Convert path to EXE file data location
 def resource_path(relative_path):
     try:
         base_path = sys._MEIPASS
@@ -25,7 +32,8 @@ def resource_path(relative_path):
     return os.path.join(base_path, relative_path)
 
 
-# The class containing the game methods
+# The class containing the primary methods and processes for updating and
+# rendering the game on the screen, as well as receiving input.
 class Game:
 
     # Initialize permanent variables
@@ -47,7 +55,8 @@ class Game:
         self.throw_count = 0
         self.current_map = initial_map
         self.hint_text = []
-        # Load music
+        self.delta_time = 0.01
+        # Load and play music
         pygame.mixer.music.load(resource_path("assets/music_compressed.ogg"))
         pygame.mixer.music.set_volume(0.25)
         pygame.mixer.music.play(-1)
@@ -68,10 +77,9 @@ class Game:
         self.size = self.width, self.height
         self.screen = pygame.display.set_mode(self.size)
         self.hint_text = []
+        # Load text labels if necessary
         if "tutorial" in map_name or "the_end" in map_name:
             self.load_tutorial_text(map_name)
-        # if self.last_inputs:
-        # self.grid.player.movement_directions = self.last_inputs
 
     # Load text hints for the tutorial
     def load_tutorial_text(self, level_name):
@@ -85,6 +93,20 @@ class Game:
                 hint = hint[0].replace(";", ","), float(hint[1]) - 1, float(
                     hint[2]) - 1
                 self.hint_text.append(hint)
+
+    def display_level_info(self):
+        # Display level name
+        level_text = self.current_map.replace("_", " ").capitalize()
+        space = self.draw_top_text(level_text, self.ui_font,
+                                   self.pixel_scale * 4)
+        # Display coin amount
+        coin_text = "Coins: " + \
+                    str(self.coin_count + self.grid.player.coin_count)
+        space = self.draw_top_text(coin_text, self.ui_font, space)
+        # Display the number of throws
+        throws_text = "Throws: " + \
+                      str(self.throw_count + self.grid.player.throw_count)
+        self.draw_top_text(throws_text, self.ui_font, space)
 
     # Process key presses and exits
     def process_events(self):
@@ -122,35 +144,23 @@ class Game:
 
     # The main procedure with game logic
     def game_loop(self):
+        # Process keyboard input
         self.process_events()
         # Update positions
-        self.grid.player.update(0.01)
-        self.grid.update_enemies(0.01)
+        self.grid.update_entities(self.delta_time)
         # Draw everything on the screen
         self.surface.fill((0, 0, 0))
-        self.surface.blit(self.grid.draw_grid(), self.surface.get_rect())
-        self.grid.draw_enemies(self.surface)
-        self.surface.blit(*self.grid.player.draw_sprite())
-        if self.grid.player.boomerang_in_air():
-            self.surface.blit(*self.grid.player.boomerang.draw_sprite())
+        self.grid.draw_grid(self.surface)
+        self.grid.draw_entities(self.surface)
         # Scale up to fit the screen
         pygame.transform.scale(self.surface, self.size, self.screen)
-        # Show coins and throws if not in tutorial
+        # Show coins and throws if the tutorial is finished
         if "tutorial_1" not in self.current_map:
-            level_text = self.current_map.replace("_", " ").capitalize()
-            space = self.draw_top_text(level_text, self.ui_font,
-                                       self.pixel_scale * 4)
-            coin_text = "Coins: " + \
-                        str(self.coin_count + self.grid.player.coin_count)
-            space = self.draw_top_text(coin_text, self.ui_font, space)
-            throws_text = "Throws: " + \
-                          str(self.throw_count + self.grid.player.throw_count)
-            self.draw_top_text(throws_text, self.ui_font, space)
-        # Show Game Over if the player is dead
+            self.display_level_info()
+        # Show Game Over if the player has died
         if self.grid.player.is_dead:
             line = self.draw_middle_text("Game Over", self.ui_font_big, 0)
-            self.draw_middle_text("Press space to retry",
-                                  self.ui_font, line)
+            self.draw_middle_text("Press space to retry", self.ui_font, line)
         # Show tutorial tips
         for hint in self.hint_text:
             text = self.ui_font.render(hint[0], False, (255, 255, 255))
