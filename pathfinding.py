@@ -42,7 +42,7 @@ def merge_sort(unsorted_list, start=0, end=-1):
     return
 
 
-# Implements a quick binary search for checking if the element is in the list
+# Implements a recursive binary search for the Breadth First Search
 # Returns a tuple whether the value is found, index where it could be placed in
 def binary_search(sorted_list, value):
     # If the list is empty return -1
