@@ -68,7 +68,7 @@ https://raw.githubusercontent.com/BJNick/cs30-final-project/master/screenshots/g
 
 #### OOP
 
-![Class diagram](https://raw.githubusercontent.com/BJNick/cs30-final-project/master/screenshots/class_diagram.jpg)
+![Class diagram](https://raw.githubusercontent.com/BJNick/cs30-final-project/master/screenshots/class_diagram.png)
 
 The project has the following class hierarchy:
 
