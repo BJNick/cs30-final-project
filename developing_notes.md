@@ -36,7 +36,8 @@ Result:
 
 ### Sprites
 
-The sprites folder contains images for each tile/entity that are used in the game. They are saved in .png format to preserve transparency since some tiles (switch, spikes) can be drawn on top of others.
+The 
+*[/sprites/](https://github.com/BJNick/cs30-final-project/tree/master/sprites)* folder contains images for each tile/entity that are used in the game. They are saved in .png format to preserve transparency since some tiles (switch, spikes) can be drawn on top of others.
 
 ![Screenshot of the sprites folder](
 https://raw.githubusercontent.com/BJNick/cs30-final-project/master/screenshots/sprites_folder.jpg)

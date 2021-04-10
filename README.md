@@ -68,8 +68,7 @@ https://raw.githubusercontent.com/BJNick/cs30-final-project/master/screenshots/g
 
 #### OOP
 
-![A preview of the game](
-https://raw.githubusercontent.com/BJNick/cs30-final-project/master/screenshots/class_diagram.jpg)
+![Class diagram](https://raw.githubusercontent.com/BJNick/cs30-final-project/master/screenshots/class_diagram.jpg)
 
 The project has the following class hierarchy:
 
