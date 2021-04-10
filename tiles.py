@@ -6,8 +6,8 @@ A module that contains classes for tiles that are located on the grid but
 cannot move unlike entities. Active tiles can still update over time through
 entity interaction (such as a switch activated by a boomerang).
 
-Tile         -> Corner, ActiveTile
-ActiveTile   -> Spikes, Switch, Exit
+Tile         <- Corner, ActiveTile
+ActiveTile   <- Spikes, Switch, Exit
 PARENT CLASS    SUBCLASSES
 """
 
