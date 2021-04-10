@@ -295,7 +295,7 @@ class Boomerang(MovingEntity):
                         round(self.column + column_disp / 2)
         return self.grid.get_tile_at(*adjacent_tile), adjacent_tile
 
-    # Tries to move the player in a given direction, returns None if succeeds
+    # Tries to move the boomerang in a given direction, returns None if succeeds
     def move(self, direction, distance):
 
         row_disp, column_disp = MovingEntity.dir_to_disp(direction)
@@ -310,7 +310,7 @@ class Boomerang(MovingEntity):
         # Else stay where you are
         return False
 
-    # Redraws the player's sprite and returns it
+    # Redraws the boomerang's sprite and returns it
     def draw_sprite(self) -> (pygame.Surface, pygame.Rect):
         # Calculate the angle of rotation (0, 45, 90, 135 etc.)
         angle_step = 45
@@ -420,7 +420,7 @@ class Enemy(MovingEntity):
                 return
         # Kill the player on touch
         if self.distance_to(self.grid.player) < 0.7:
-            self.grid.player.kill(self)
+            self.grid.player.kill()
         # Update with active tiles
         self.update_with_tiles()
         super().update(delta_time, step)

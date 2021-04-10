@@ -3,12 +3,7 @@ Mykyta S.
 main.py
 
 The run-time main class of this application. Class Game displays the game on
-the screen. Expanded class structure:
-
-Game:
-    Grid:
-        Tile <- Corner, ActiveTile <- Spikes, Switch, Exit
-        MovingEntity <- Player, Boomerang, Enemy, Coin
+the screen.
 """
 
 import sys
@@ -18,7 +13,7 @@ import time
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 import pygame
 
-# Import my own modules
+# Import my own modules (grid_world.py imports the rest)
 import grid_world
 
 

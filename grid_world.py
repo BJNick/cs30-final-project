@@ -57,6 +57,7 @@ class Grid:
                     elif value == "coin":
                         self.coins.append(Coin(self, row, column))
 
+                    # Add the new tile to the dictionary based on row, column
                     self.map[(row, column)] = new_tile
                     if new_tile.is_active:
                         new_tile.set_coordinates(self, row, column)
