@@ -4,8 +4,7 @@
 ![A preview of the game](
 https://raw.githubusercontent.com/BJNick/cs30-final-project/master/screenshots/game_preview.gif)
 
-### [Itch.io page](https://bjnick.itch.io/bouncy-boomerang)
-### [Download the executable](https://bjnick.itch.io/bouncy-boomerang#download)
+### [Itch.io Page](https://bjnick.itch.io/bouncy-boomerang) | [Download the executable](https://bjnick.itch.io/bouncy-boomerang#download) | [Screenshots](https://github.com/BJNick/cs30-final-project/blob/master/walkthrough.md)
 
 ## CS30 Final Project Outline
 
